@@ -30,6 +30,12 @@ func withDB(db *mgo.Session) middleware.Adapter {
 
 func main() {
 
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
 	db, err := common.CreateDB()
 
 	if err != nil {
@@ -54,9 +60,6 @@ func main() {
 		router.Handle(route.Path, context.ClearHandler(h)).Methods(route.Method)
 	}
 
-	err = http.ListenAndServe(":"+os.Getenv("PORT"), router)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	log.Fatal(http.ListenAndServe(":"+port, router))
 
 }
