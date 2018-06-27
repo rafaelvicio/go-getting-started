@@ -54,7 +54,9 @@ func main() {
 		router.Handle(route.Path, context.ClearHandler(h)).Methods(route.Method)
 	}
 
-	port := ":" + os.Getenv("PORT")
-	log.Fatal(http.ListenAndServe(port, router))
+	err = http.ListenAndServe(":"+os.Getenv("PORT"), router)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 
 }
